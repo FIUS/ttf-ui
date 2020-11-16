@@ -29,7 +29,7 @@ export class AttributeDefinitionCreateComponent {
     onDataChange(data) {
         if (data != null && data.type != null) {
             if (data.type === 'string') {
-                const maxLength = (window as any).maxDBStringLength - 2;
+                const maxLength = this.api.getMaxStringSize();
                 if (data.jsonschema == null || data.jsonschema === '') {
                     data.jsonschema = JSON.stringify({maxLength: maxLength}, undefined, '\t');
                 } else {

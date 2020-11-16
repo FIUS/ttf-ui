@@ -194,11 +194,11 @@ export class SearchComponent implements OnChanges {
         if (schema.type === 'number' || schema.type === 'integer') {
             schema.type = 'string';
             // add maxLength to get single line text field
-            schema.maxLength = (window as any).maxDBStringLength - 2;
+            schema.maxLength = this.api.getMaxStringSize();
         }
         schema['x-nullable'] = true;
         if (attribute_definition.type === 'string') {
-            const maxLength = (window as any).maxDBStringLength - 2;
+            const maxLength = this.api.getMaxStringSize();
             if (schema.maxLength == null || schema.maxLength > maxLength) {
                 schema.maxLength = maxLength;
             }

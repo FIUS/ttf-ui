@@ -61,7 +61,7 @@ export class AttributeDefinitionEditComponent implements OnChanges, OnDestroy {
         }
         schema.type = attribute_definition.type;
         if (attribute_definition.type === 'string') {
-            const maxLength = (window as any).maxDBStringLength - 2;
+            const maxLength = this.api.getMaxStringSize();
             if (schema.maxLength == null || schema.maxLength > maxLength) {
                 schema.maxLength = maxLength;
             }
