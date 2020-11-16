@@ -1,0 +1,5 @@
+{
+    "backendServerUri": "http://localhost:5000",
+    "backendRootResourceLocation": "/",
+    "maxStringLength": 188
+}

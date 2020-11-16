@@ -7,6 +7,8 @@ import { BaseApiService, ApiObject, LinkObject, ApiLinksObject } from './api-bas
 import { JWTService } from './jwt.service';
 import { InfoService } from '../info/info.service';
 import { saveAs } from 'file-saver';
+import { WebappSettings, WebappSettingsService } from '../../webapp-settings'
+import { ThrowStmt } from '@angular/compiler';
 
 
 export interface RootLinks extends ApiLinksObject {
@@ -71,7 +73,9 @@ export class ApiService implements OnInit {
 
     private streams: {[propName: string]: BehaviorSubject<unknown>} = {};
 
-    constructor(private rest: BaseApiService, private info: InfoService, private injector: Injector) {
+    private webappSettings: WebappSettings = null;
+
+    constructor(private rest: BaseApiService, private info: InfoService, private injector: Injector, private webappSettingsService: WebappSettingsService) {
         observableTimer(0).pipe(take(1)).subscribe((() => {
             this.ngOnInit()
         }).bind(this))
@@ -119,16 +123,24 @@ export class ApiService implements OnInit {
 
     getRoot(): Observable<RootModel> {
         if (!this.rootSource.isStopped) {
-            let url = '/api'
-            if ((window as any).apiBasePath != null) {
-                url = (window as any).apiBasePath;
-            }
-            this.rest.get<RootModel>(url).subscribe(data => {
-                this.rootSource.next(data);
-                this.rootSource.complete();
+            this.webappSettingsService.getWebappSettings().subscribe((webappSettings: WebappSettings) => {
+                this.webappSettings = webappSettings;
+                this.rest.setBackendServerUri(webappSettings.backendServerUri);
+                this.rest.get<RootModel>(webappSettings.backendRootResourceLocation).subscribe(data => {
+                    this.rootSource.next(data);
+                    this.rootSource.complete();
+                });
             });
         }
         return this.currentRoot;
+    }
+
+    getMaxStringSize(): number {
+        if (this.webappSettings == null) {
+            // Is never the case after the rootSource is completed. 
+            return 0;
+        }
+        return this.webappSettings.maxStringLength;
     }
 
     getSpec(): Observable<any> {

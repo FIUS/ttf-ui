@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import de from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 
@@ -127,6 +127,7 @@ registerLocaleData(de, 'de-DE', localeDeExtra);
     providers: [
         NavigationService,
         StagingService,
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
     ],
     bootstrap: [AppComponent]
 })
