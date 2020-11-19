@@ -17,9 +17,9 @@ export class WebappSettingsService {
  * Immutable representation of the settings configured in webappSettings.json
  */
 export class WebappSettings {
-    backendServerUri: string;
-    backendRootResourceLocation: string;
-    maxStringLength: number;
+    readonly backendServerUri: string;
+    readonly backendRootResourceLocation: string;
+    readonly maxStringLength: number;
     constructor(backendUri: string, backendRootResourceLocation: string, maxStringLength: number) {
         this.backendServerUri = backendUri;
         this.backendRootResourceLocation = backendRootResourceLocation;

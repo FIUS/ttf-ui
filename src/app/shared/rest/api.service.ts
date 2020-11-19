@@ -123,7 +123,7 @@ export class ApiService implements OnInit {
 
     getRoot(): Observable<RootModel> {
         if (!this.rootSource.isStopped) {
-            this.webappSettingsService.getWebappSettings().subscribe((webappSettings: WebappSettings) => {
+            this.webappSettingsService.getWebappSettings().pipe(take(1)).subscribe((webappSettings: WebappSettings) => {
                 this.webappSettings = webappSettings;
                 this.rest.setBackendServerUri(webappSettings.backendServerUri);
                 this.rest.get<RootModel>(webappSettings.backendRootResourceLocation).subscribe(data => {
