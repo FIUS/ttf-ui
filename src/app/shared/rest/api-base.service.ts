@@ -4,7 +4,6 @@ import { throwError as observableThrowError,  Observable, AsyncSubject } from 'r
 import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { error } from 'protractor';
 
 export interface LinkObject {
     readonly href: string;
@@ -142,7 +141,7 @@ export class BaseApiService {
             this.runningRequests.delete(url as string);
         }, (error: any) => {
             this.runningRequests.delete(url as string);
-            console.log(error);
+            console.error(error);
             request.error(this.getErrorContent(error));
         });
         return request;
@@ -152,7 +151,7 @@ export class BaseApiService {
         url = this.extractUrl(url);
         return this.http.put<T>(url, JSON.stringify(data), this.headers(token)).pipe(
             catchError((error: any) => {
-                console.log(error);
+                console.error(error);
                 return observableThrowError(this.getErrorContent(error));
             }),
         );
@@ -162,7 +161,7 @@ export class BaseApiService {
         url = this.extractUrl(url);
         return this.http.post<T>(url, JSON.stringify(data), this.headers(token)).pipe(
             catchError((error: any) => {
-                console.log(error);
+                console.error(error);
                 return observableThrowError(this.getErrorContent(error));
             }),
         );
@@ -173,7 +172,7 @@ export class BaseApiService {
         const options = this.headers(token, false);
         return this.http.post<T>(url, data, options).pipe(
             catchError((error: any) => {
-                console.log(error);
+                console.error(error);
                 return observableThrowError(this.getErrorContent(error));
             }),
         );
@@ -186,7 +185,7 @@ export class BaseApiService {
         options.observe = 'response';
         return this.http.get<Response>(url, options).pipe(
             catchError((error: any) => {
-                console.log(error);
+                console.error(error);
                 return observableThrowError(this.getErrorContent(error));
             }),
         );
@@ -200,7 +199,7 @@ export class BaseApiService {
         }
         return this.http.delete<T>(url, options).pipe(
             catchError((error: any) => {
-                console.log(error);
+                console.error(error);
                 return observableThrowError(this.getErrorContent(error));
             }),
         );
