@@ -6,13 +6,13 @@ COPY angular.json package.json package-lock.json tsconfig.json /app/
 COPY src /app/src
 
 # build environment
-FROM node:current AS builder
+FROM node:14 AS builder
 
 COPY --from=source /app/ /app/
 
 WORKDIR /app
 
-RUN set -x; npm install
+RUN set -x; npm clean-install
 RUN set -x; npm run build --prod --extract-css
 
 # production
